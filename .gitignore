@@ -1,27 +1,30 @@
 # Dependencias de Node.js
-/node_modules
 /.pnp
 .pnp.js
 package-lock.json
 yarn.lock
 
-# Archivos compilados de Tailwind CSS
-/dist/
+# Archivos compilados
+node_modules/
 
-# Variables de entorno
-.env*.local
+# Archivos de entorno
 .env
+.env.local
+.env.production
 
-# Archivos de depuración
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+# Build de Next.js (si existe)
+next/
+out/
 
-# Archivos del sistema
+# Build de producción
+build/
+dist/
+
+# Archivos de sistema
 .DS_Store
 Thumbs.db
 
-# IDEs y editores
+# Archivos de IDE
 .vscode/
 .idea/
 *.swp

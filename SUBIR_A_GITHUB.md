@@ -88,7 +88,7 @@ git commit -m "Initial commit: SeniorInteract - Sistema de autenticación comple
 ### Paso 5: Conectar Repositorio Local con GitHub
 ```bash
 # Agregar el repositorio remoto (reemplaza USERNAME con tu usuario de GitHub)
-git remote add origin https://github.com/USERNAME/senioriteract.git
+git remote add origin https://github.com/VicenAlonso/senioriteract.git
 
 # Verificar que se agregó correctamente
 git remote -v

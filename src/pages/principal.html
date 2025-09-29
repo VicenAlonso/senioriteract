@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Página principal de SeniorInteract - Área privada para usuarios registrados">
+    <title>Mi Área Personal - SeniorInteract</title>
+    
+    <!-- Fuentes de Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Estilos CSS -->
+    <link rel="stylesheet" href="../../dist/style.css">
+    <link rel="stylesheet" href="../css/auth.css">
+    
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="antialiased bg-gray-50 text-gray-900 min-h-screen">
+    <!-- Indicador de carga inicial -->
+    <div id="cargando-inicial" class="fixed inset-0 bg-white flex items-center justify-center z-50">
+        <div class="text-center">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <p class="text-gray-600">Verificando sesión...</p>
+        </div>
+    </div>
+
+    <!-- Contenido principal (oculto inicialmente) -->
+    <div id="contenido-principal" class="hidden">
+        <!-- Encabezado principal -->
+        <header class="bg-white shadow-sm border-b border-gray-200">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <div class="flex items-center">
+                        <h1 class="text-xl font-semibold text-blue-700">
+                            SeniorInteract
+                        </h1>
+                    </div>
+                    
+                    <!-- Información del usuario -->
+                    <div class="flex items-center space-x-4">
+                        <div class="hidden md:block text-right">
+                            <p class="text-sm text-gray-600">Bienvenido/a</p>
+                            <p id="nombre-usuario" class="font-semibold text-gray-900">Usuario</p>
+                        </div>
+                        
+                        <!-- Menú de usuario -->
+                        <div class="relative">
+                            <button id="boton-menu-usuario" class="flex items-center space-x-2 text-gray-700 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-lg p-2">
+                                <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                                    <span class="text-blue-600 font-semibold" id="iniciales-usuario">U</span>
+                                </div>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+                            
+                            <!-- Menú desplegable -->
+                            <div id="menu-usuario" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-10">
+                                <div class="py-1">
+                                    <div class="px-4 py-2 border-b border-gray-100">
+                                        <p class="text-sm font-medium text-gray-900" id="email-usuario">usuario@email.com</p>
+                                        <p class="text-xs text-gray-500" id="rol-usuario">Adulto Mayor</p>
+                                    </div>
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Mi Perfil</a>
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Configuración</a>
+                                    <div class="border-t border-gray-100">
+                                        <button id="boton-cerrar-sesion" class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50">
+                                            Cerrar Sesión
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Contenido principal -->
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <!-- Mensaje de bienvenida -->
+            <section class="mb-8">
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-6">
+                    <h2 class="text-2xl font-bold text-blue-900 mb-2">
+                        ¡Bienvenido a tu área personal!
+                    </h2>
+                    <p class="text-blue-800">
+                        Desde aquí puedes acceder a todas las funcionalidades de SeniorInteract diseñadas especialmente para ti.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Módulos principales -->
+            <section class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                <!-- Módulo Comunicación -->
+                <div class="tarjeta cursor-pointer hover:shadow-lg transition-shadow duration-200" onclick="proximamente('Comunicación')">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="text-3xl" role="img" aria-label="Comunicación">💬</span>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                            Comunicación
+                        </h3>
+                        <p class="text-gray-600">
+                            Mantente en contacto con familiares y amigos de forma fácil y segura.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Módulo Salud -->
+                <div class="tarjeta cursor-pointer hover:shadow-lg transition-shadow duration-200" onclick="proximamente('Salud')">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="text-3xl" role="img" aria-label="Salud">🏥</span>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                            Salud
+                        </h3>
+                        <p class="text-gray-600">
+                            Lleva un registro de tu salud, medicamentos y citas médicas.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Módulo Entretenimiento -->
+                <div class="tarjeta cursor-pointer hover:shadow-lg transition-shadow duration-200" onclick="proximamente('Entretenimiento')">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="text-3xl" role="img" aria-label="Entretenimiento">🎮</span>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                            Entretenimiento
+                        </h3>
+                        <p class="text-gray-600">
+                            Juegos, música y actividades para mantenerte activo mentalmente.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Módulo Aprendizaje -->
+                <div class="tarjeta cursor-pointer hover:shadow-lg transition-shadow duration-200" onclick="proximamente('Aprendizaje')">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="text-3xl" role="img" aria-label="Aprendizaje">📚</span>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                            Aprendizaje
+                        </h3>
+                        <p class="text-gray-600">
+                            Cursos y tutoriales adaptados para aprender nuevas tecnologías.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Módulo Servicios -->
+                <div class="tarjeta cursor-pointer hover:shadow-lg transition-shadow duration-200" onclick="proximamente('Servicios')">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="text-3xl" role="img" aria-label="Servicios">🛍️</span>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                            Servicios
+                        </h3>
+                        <p class="text-gray-600">
+                            Accede a servicios útiles como compras online y trámites digitales.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Módulo Ayuda -->
+                <div class="tarjeta cursor-pointer hover:shadow-lg transition-shadow duration-200" onclick="mostrarAyuda()">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="text-3xl" role="img" aria-label="Ayuda">❓</span>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                            Ayuda
+                        </h3>
+                        <p class="text-gray-600">
+                            Obtén ayuda y soporte técnico cuando lo necesites.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Información adicional -->
+            <section class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">
+                    Información Importante
+                </h3>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="flex items-start space-x-3">
+                        <span class="text-green-500 text-xl">✓</span>
+                        <div>
+                            <h4 class="font-medium text-gray-900">Seguridad</h4>
+                            <p class="text-sm text-gray-600">Tu información está protegida con los más altos estándares de seguridad.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <span class="text-blue-500 text-xl">🛡️</span>
+                        <div>
+                            <h4 class="font-medium text-gray-900">Privacidad</h4>
+                            <p class="text-sm text-gray-600">Respetamos tu privacidad y nunca compartimos tu información personal.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <span class="text-purple-500 text-xl">📞</span>
+                        <div>
+                            <h4 class="font-medium text-gray-900">Soporte 24/7</h4>
+                            <p class="text-sm text-gray-600">Nuestro equipo está disponible para ayudarte en cualquier momento.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <span class="text-orange-500 text-xl">🎯</span>
+                        <div>
+                            <h4 class="font-medium text-gray-900">Fácil de Usar</h4>
+                            <p class="text-sm text-gray-600">Diseñado especialmente para ser intuitivo y accesible.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Pie de página -->
+        <footer class="bg-white border-t border-gray-200 mt-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+                <div class="flex justify-between items-center">
+                    <p class="text-sm text-gray-600">
+                        © 2024 SeniorInteract. Diseñado para facilitar la vida digital.
+                    </p>
+                    <a href="../../index.html" class="text-sm text-blue-600 hover:text-blue-800">
+                        Volver al inicio público
+                    </a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Contenedor de mensajes (se crea dinámicamente) -->
+    <div id="contenedor-mensajes"></div>
+
+    <!-- Scripts -->
+    <script src="../js/config.js"></script>
+    <script src="../js/auth.js"></script>
+    <script>
+        // Script específico para la página principal
+        document.addEventListener('DOMContentLoaded', function() {
+            const cargandoInicial = document.getElementById('cargando-inicial');
+            const contenidoPrincipal = document.getElementById('contenido-principal');
+            const botonMenuUsuario = document.getElementById('boton-menu-usuario');
+            const menuUsuario = document.getElementById('menu-usuario');
+            const botonCerrarSesion = document.getElementById('boton-cerrar-sesion');
+
+            // Verificar autenticación al cargar la página
+            verificarAutenticacion();
+
+            async function verificarAutenticacion() {
+                try {
+                    // Verificar si hay una sesión activa
+                    if (!window.GestorSesion || !window.GestorSesion.sesionActiva()) {
+                        // No hay sesión, redirigir a login
+                        window.location.href = 'login.html';
+                        return;
+                    }
+
+                    // Obtener datos de la sesión
+                    const datosUsuario = window.GestorSesion.obtenerSesion();
+                    
+                    if (!datosUsuario) {
+                        window.location.href = 'login.html';
+                        return;
+                    }
+
+                    // Cargar información del usuario en la interfaz
+                    cargarInformacionUsuario(datosUsuario.usuario);
+
+                    // Mostrar contenido principal
+                    cargandoInicial.classList.add('hidden');
+                    contenidoPrincipal.classList.remove('hidden');
+
+                } catch (error) {
+                    console.error('Error al verificar autenticación:', error);
+                    window.location.href = 'login.html';
+                }
+            }
+
+            function cargarInformacionUsuario(usuario) {
+                // Actualizar nombre del usuario
+                const nombreUsuario = document.getElementById('nombre-usuario');
+                const emailUsuario = document.getElementById('email-usuario');
+                const rolUsuario = document.getElementById('rol-usuario');
+                const inicialesUsuario = document.getElementById('iniciales-usuario');
+
+                const nombreCompleto = `${usuario.nombre} ${usuario.apellido}`;
+                nombreUsuario.textContent = nombreCompleto;
+                emailUsuario.textContent = usuario.email;
+                
+                // Formatear rol para mostrar
+                const rolesFormateados = {
+                    'adulto_mayor': 'Adulto Mayor',
+                    'moderador': 'Moderador',
+                    'administrador': 'Administrador'
+                };
+                rolUsuario.textContent = rolesFormateados[usuario.rol] || 'Usuario';
+
+                // Generar iniciales
+                const iniciales = `${usuario.nombre.charAt(0)}${usuario.apellido.charAt(0)}`.toUpperCase();
+                inicialesUsuario.textContent = iniciales;
+            }
+
+            // Manejar menú de usuario
+            botonMenuUsuario.addEventListener('click', function(evento) {
+                evento.stopPropagation();
+                menuUsuario.classList.toggle('hidden');
+            });
+
+            // Cerrar menú al hacer clic fuera
+            document.addEventListener('click', function() {
+                menuUsuario.classList.add('hidden');
+            });
+
+            // Prevenir que el menú se cierre al hacer clic dentro de él
+            menuUsuario.addEventListener('click', function(evento) {
+                evento.stopPropagation();
+            });
+
+            // Manejar cierre de sesión
+            botonCerrarSesion.addEventListener('click', async function() {
+                if (confirm('¿Estás seguro de que quieres cerrar sesión?')) {
+                    try {
+                        await window.SistemaAuth.cerrarSesion();
+                    } catch (error) {
+                        console.error('Error al cerrar sesión:', error);
+                        // Forzar redirección incluso si hay error
+                        window.location.href = 'login.html';
+                    }
+                }
+            });
+        });
+
+        // Función para módulos que están en desarrollo
+        function proximamente(modulo) {
+            if (window.SistemaAuth) {
+                window.SistemaAuth.mostrarMensaje(
+                    `El módulo de ${modulo} estará disponible próximamente. ¡Gracias por tu paciencia!`,
+                    'info'
+                );
+            } else {
+                alert(`El módulo de ${modulo} estará disponible próximamente.`);
+            }
+        }
+
+        // Función para mostrar ayuda
+        function mostrarAyuda() {
+            if (window.SistemaAuth) {
+                window.SistemaAuth.mostrarMensaje(
+                    'Para obtener ayuda, puedes contactarnos en soporte@senioriteract.com o llamar al 800-123-456',
+                    'info'
+                );
+            } else {
+                alert('Para obtener ayuda, contacta a soporte@senioriteract.com');
+            }
+        }
+    </script>
+</body>
+</html>

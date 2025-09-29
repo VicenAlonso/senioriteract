@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Iniciar sesión en SeniorInteract - Plataforma accesible para personas mayores">
+    <title>Iniciar Sesión - SeniorInteract</title>
+    
+    <!-- Fuentes de Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Estilos CSS -->
+    <link rel="stylesheet" href="../../dist/style.css">
+    <link rel="stylesheet" href="../css/auth.css">
+    
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="bg-gray-50">
+    <!-- Contenedor principal -->
+    <div class="contenedor-auth">
+        <div class="tarjeta-auth">
+            <!-- Encabezado -->
+            <div class="encabezado-auth">
+                <div class="icono-auth">
+                    <span role="img" aria-label="Usuario">👤</span>
+                </div>
+                <h1>Iniciar Sesión</h1>
+                <p>Bienvenido de vuelta a SeniorInteract</p>
+            </div>
+
+            <!-- Formulario de login -->
+            <form id="formulario-login" class="formulario-auth" novalidate>
+                <!-- Campo Email -->
+                <div class="grupo-campo">
+                    <label for="email" class="etiqueta-campo etiqueta-requerida">
+                        Correo Electrónico
+                    </label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email"
+                        class="campo-auth"
+                        placeholder="tu@email.com"
+                        required
+                        autocomplete="email"
+                        aria-describedby="ayuda-email"
+                    >
+                    <div id="ayuda-email" class="mensaje-ayuda">
+                        Ingresa el email con el que te registraste
+                    </div>
+                </div>
+
+                <!-- Campo Contraseña -->
+                <div class="grupo-campo">
+                    <label for="clave" class="etiqueta-campo etiqueta-requerida">
+                        Contraseña
+                    </label>
+                    <div class="relative">
+                        <input 
+                            type="password" 
+                            id="clave" 
+                            name="clave"
+                            class="campo-auth"
+                            placeholder="Tu contraseña"
+                            required
+                            autocomplete="current-password"
+                            aria-describedby="ayuda-clave"
+                        >
+                        <button 
+                            type="button" 
+                            id="boton-mostrar-clave"
+                            class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                            aria-label="Mostrar contraseña"
+                        >
+                            <span id="icono-ojo">👁️</span>
+                        </button>
+                    </div>
+                    <div id="ayuda-clave" class="mensaje-ayuda">
+                        Mínimo 8 caracteres
+                    </div>
+                </div>
+
+                <!-- Recordar sesión -->
+                <div class="checkbox-auth">
+                    <input type="checkbox" id="recordar" name="recordar">
+                    <label for="recordar">Recordar mi sesión</label>
+                </div>
+
+                <!-- Botón de envío -->
+                <button type="submit" class="boton-auth-primario" id="boton-login">
+                    Iniciar Sesión
+                </button>
+
+                <!-- Enlace recuperar contraseña -->
+                <div class="text-center">
+                    <a href="recuperar.html" class="enlace-auth">
+                        ¿Olvidaste tu contraseña?
+                    </a>
+                </div>
+            </form>
+
+            <!-- Separador -->
+            <div class="separador-auth">
+                <span>o</span>
+            </div>
+
+            <!-- Botón registro -->
+            <a href="registro.html" class="boton-auth-secundario block text-center">
+                Crear Nueva Cuenta
+            </a>
+
+            <!-- Pie del formulario -->
+            <div class="pie-auth">
+                <p>
+                    <a href="../../index.html" class="enlace-auth">
+                        ← Volver al inicio
+                    </a>
+                </p>
+                <p class="text-xs text-gray-500 mt-4">
+                    Al iniciar sesión, aceptas nuestros términos de servicio y política de privacidad
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenedor de mensajes (se crea dinámicamente) -->
+    <div id="contenedor-mensajes"></div>
+
+    <!-- Scripts -->
+    <script src="../js/config.js"></script>
+    <script src="../js/auth.js"></script>
+    <script>
+        // Script específico para la página de login
+        document.addEventListener('DOMContentLoaded', function() {
+            const formularioLogin = document.getElementById('formulario-login');
+            const botonMostrarClave = document.getElementById('boton-mostrar-clave');
+            const campoClave = document.getElementById('clave');
+            const iconoOjo = document.getElementById('icono-ojo');
+            const botonLogin = document.getElementById('boton-login');
+
+            // Verificar si ya hay una sesión activa
+            if (window.GestorSesion && window.GestorSesion.sesionActiva()) {
+                window.SistemaAuth.mostrarMensaje('Ya tienes una sesión activa', 'info');
+                setTimeout(() => {
+                    window.location.href = '../../index.html';
+                }, 2000);
+                return;
+            }
+
+            // Manejar envío del formulario
+            formularioLogin.addEventListener('submit', async function(evento) {
+                evento.preventDefault();
+                
+                const datosFormulario = new FormData(formularioLogin);
+                const email = datosFormulario.get('email').trim();
+                const clave = datosFormulario.get('clave');
+
+                // Guardar texto original del botón
+                const textoOriginal = botonLogin.textContent;
+                
+                try {
+                    const exito = await window.SistemaAuth.iniciarSesion(email, clave);
+                    
+                    if (exito) {
+                        botonLogin.textContent = 'Redirigiendo...';
+                        // La redirección se maneja en el sistema de auth
+                    }
+                } finally {
+                    // Restaurar texto del botón si no fue exitoso
+                    setTimeout(() => {
+                        if (botonLogin.textContent !== 'Redirigiendo...') {
+                            botonLogin.textContent = textoOriginal;
+                        }
+                    }, 100);
+                }
+            });
+
+            // Mostrar/ocultar contraseña
+            botonMostrarClave.addEventListener('click', function() {
+                if (campoClave.type === 'password') {
+                    campoClave.type = 'text';
+                    iconoOjo.textContent = '🙈';
+                    botonMostrarClave.setAttribute('aria-label', 'Ocultar contraseña');
+                } else {
+                    campoClave.type = 'password';
+                    iconoOjo.textContent = '👁️';
+                    botonMostrarClave.setAttribute('aria-label', 'Mostrar contraseña');
+                }
+            });
+
+            // Validación en tiempo real
+            const campoEmail = document.getElementById('email');
+            
+            campoEmail.addEventListener('blur', function() {
+                if (this.value && !window.Validadores.validarEmail(this.value)) {
+                    this.setCustomValidity('Por favor, ingresa un email válido');
+                    this.reportValidity();
+                } else {
+                    this.setCustomValidity('');
+                }
+            });
+
+            campoClave.addEventListener('blur', function() {
+                if (this.value && !window.Validadores.validarClave(this.value)) {
+                    this.setCustomValidity('La contraseña debe tener al menos 8 caracteres');
+                    this.reportValidity();
+                } else {
+                    this.setCustomValidity('');
+                }
+            });
+
+            // Limpiar mensajes de error al escribir
+            [campoEmail, campoClave].forEach(campo => {
+                campo.addEventListener('input', function() {
+                    this.setCustomValidity('');
+                });
+            });
+
+            // Enfocar el primer campo
+            campoEmail.focus();
+        });
+    </script>
+</body>
+</html>

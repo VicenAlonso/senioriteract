@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Crear cuenta en SeniorInteract - Plataforma accesible para personas mayores">
+    <title>Crear Cuenta - SeniorInteract</title>
+    
+    <!-- Fuentes de Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Estilos CSS -->
+    <link rel="stylesheet" href="../../dist/style.css">
+    <link rel="stylesheet" href="../css/auth.css">
+    
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="bg-gray-50">
+    <!-- Contenedor principal -->
+    <div class="contenedor-auth">
+        <div class="tarjeta-auth" style="max-width: 600px;">
+            <!-- Encabezado -->
+            <div class="encabezado-auth">
+                <div class="icono-auth">
+                    <span role="img" aria-label="Registro">📝</span>
+                </div>
+                <h1>Crear Cuenta</h1>
+                <p>Únete a SeniorInteract y disfruta de una experiencia digital accesible</p>
+            </div>
+
+            <!-- Formulario de registro -->
+            <form id="formulario-registro" class="formulario-auth" novalidate>
+                <!-- Información Personal -->
+                <div class="grupo-campo-doble">
+                    <div class="grupo-campo">
+                        <label for="nombre" class="etiqueta-campo etiqueta-requerida">
+                            Nombre
+                        </label>
+                        <input 
+                            type="text" 
+                            id="nombre" 
+                            name="nombre"
+                            class="campo-auth"
+                            placeholder="Tu nombre"
+                            required
+                            autocomplete="given-name"
+                            aria-describedby="ayuda-nombre"
+                        >
+                        <div id="ayuda-nombre" class="mensaje-ayuda">
+                            Solo tu nombre de pila
+                        </div>
+                    </div>
+
+                    <div class="grupo-campo">
+                        <label for="apellido" class="etiqueta-campo etiqueta-requerida">
+                            Apellido
+                        </label>
+                        <input 
+                            type="text" 
+                            id="apellido" 
+                            name="apellido"
+                            class="campo-auth"
+                            placeholder="Tu apellido"
+                            required
+                            autocomplete="family-name"
+                            aria-describedby="ayuda-apellido"
+                        >
+                        <div id="ayuda-apellido" class="mensaje-ayuda">
+                            Tu apellido paterno
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RUT -->
+                <div class="grupo-campo">
+                    <label for="rut" class="etiqueta-campo etiqueta-requerida">
+                        RUT
+                    </label>
+                    <input 
+                        type="text" 
+                        id="rut" 
+                        name="rut"
+                        class="campo-auth campo-rut"
+                        placeholder="12.345.678-9"
+                        required
+                        maxlength="12"
+                        aria-describedby="ayuda-rut"
+                    >
+                    <div id="ayuda-rut" class="mensaje-ayuda">
+                        Ingresa tu RUT sin puntos, solo con guión (ej: 12345678-9)
+                    </div>
+                    <div id="error-rut" class="mensaje-error" style="display: none;"></div>
+                </div>
+
+                <!-- Email -->
+                <div class="grupo-campo">
+                    <label for="email" class="etiqueta-campo etiqueta-requerida">
+                        Correo Electrónico
+                    </label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email"
+                        class="campo-auth"
+                        placeholder="tu@email.com"
+                        required
+                        autocomplete="email"
+                        aria-describedby="ayuda-email"
+                    >
+                    <div id="ayuda-email" class="mensaje-ayuda">
+                        Usaremos este email para enviarte información importante
+                    </div>
+                </div>
+
+                <!-- Contraseña -->
+                <div class="grupo-campo">
+                    <label for="clave" class="etiqueta-campo etiqueta-requerida">
+                        Contraseña
+                    </label>
+                    <div class="relative">
+                        <input 
+                            type="password" 
+                            id="clave" 
+                            name="clave"
+                            class="campo-auth"
+                            placeholder="Crea una contraseña segura"
+                            required
+                            autocomplete="new-password"
+                            aria-describedby="ayuda-clave"
+                        >
+                        <button 
+                            type="button" 
+                            id="boton-mostrar-clave"
+                            class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                            aria-label="Mostrar contraseña"
+                        >
+                            <span id="icono-ojo">👁️</span>
+                        </button>
+                    </div>
+                    <div class="indicador-clave">
+                        <div class="barra-fortaleza">
+                            <div id="progreso-fortaleza" class="progreso-fortaleza"></div>
+                        </div>
+                        <div id="texto-fortaleza" class="texto-fortaleza">
+                            Ingresa una contraseña
+                        </div>
+                    </div>
+                    <div id="ayuda-clave" class="mensaje-ayuda">
+                        Mínimo 8 caracteres, incluye mayúsculas, minúsculas y números
+                    </div>
+                </div>
+
+                <!-- Confirmar Contraseña -->
+                <div class="grupo-campo">
+                    <label for="confirmar-clave" class="etiqueta-campo etiqueta-requerida">
+                        Confirmar Contraseña
+                    </label>
+                    <input 
+                        type="password" 
+                        id="confirmar-clave" 
+                        name="confirmar-clave"
+                        class="campo-auth"
+                        placeholder="Repite tu contraseña"
+                        required
+                        autocomplete="new-password"
+                        aria-describedby="ayuda-confirmar-clave"
+                    >
+                    <div id="ayuda-confirmar-clave" class="mensaje-ayuda">
+                        Debe coincidir con la contraseña anterior
+                    </div>
+                </div>
+
+                <!-- Información Adicional -->
+                <div class="grupo-campo-doble">
+                    <div class="grupo-campo">
+                        <label for="fecha-nacimiento" class="etiqueta-campo">
+                            Fecha de Nacimiento
+                        </label>
+                        <input 
+                            type="date" 
+                            id="fecha-nacimiento" 
+                            name="fecha-nacimiento"
+                            class="campo-auth"
+                            max="2006-01-01"
+                            aria-describedby="ayuda-fecha"
+                        >
+                        <div id="ayuda-fecha" class="mensaje-ayuda">
+                            Opcional - nos ayuda a personalizar tu experiencia
+                        </div>
+                    </div>
+
+                    <div class="grupo-campo">
+                        <label for="telefono" class="etiqueta-campo">
+                            Teléfono
+                        </label>
+                        <input 
+                            type="tel" 
+                            id="telefono" 
+                            name="telefono"
+                            class="campo-auth"
+                            placeholder="+56 9 1234 5678"
+                            autocomplete="tel"
+                            aria-describedby="ayuda-telefono"
+                        >
+                        <div id="ayuda-telefono" class="mensaje-ayuda">
+                            Opcional - para contacto de emergencia
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rol -->
+                <div class="grupo-campo">
+                    <label for="rol" class="etiqueta-campo etiqueta-requerida">
+                        Tipo de Usuario
+                    </label>
+                    <select 
+                        id="rol" 
+                        name="rol"
+                        class="selector-auth"
+                        required
+                        aria-describedby="ayuda-rol"
+                    >
+                        <option value="">Selecciona tu tipo de usuario</option>
+                        <option value="adulto_mayor">Adulto Mayor</option>
+                        <option value="moderador">Moderador/Cuidador</option>
+                        <option value="administrador">Administrador</option>
+                    </select>
+                    <div id="ayuda-rol" class="mensaje-ayuda">
+                        Esto nos ayuda a personalizar tu experiencia
+                    </div>
+                </div>
+
+                <!-- Términos y condiciones -->
+                <div class="checkbox-auth">
+                    <input type="checkbox" id="terminos" name="terminos" required>
+                    <label for="terminos">
+                        Acepto los 
+                        <a href="#" class="enlace-auth">términos de servicio</a> 
+                        y la 
+                        <a href="#" class="enlace-auth">política de privacidad</a>
+                    </label>
+                </div>
+
+                <!-- Botón de envío -->
+                <button type="submit" class="boton-auth-primario" id="boton-registro">
+                    Crear Mi Cuenta
+                </button>
+            </form>
+
+            <!-- Separador -->
+            <div class="separador-auth">
+                <span>o</span>
+            </div>
+
+            <!-- Botón login -->
+            <a href="login.html" class="boton-auth-secundario block text-center">
+                Ya tengo una cuenta
+            </a>
+
+            <!-- Pie del formulario -->
+            <div class="pie-auth">
+                <p>
+                    <a href="../../index.html" class="enlace-auth">
+                        ← Volver al inicio
+                    </a>
+                </p>
+                <p class="text-xs text-gray-500 mt-4">
+                    Al crear una cuenta, aceptas recibir comunicaciones importantes sobre tu cuenta
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenedor de mensajes (se crea dinámicamente) -->
+    <div id="contenedor-mensajes"></div>
+
+    <!-- Scripts -->
+    <script src="../js/config.js"></script>
+    <script src="../js/auth.js"></script>
+    <script>
+        // Script específico para la página de registro
+        document.addEventListener('DOMContentLoaded', function() {
+            const formularioRegistro = document.getElementById('formulario-registro');
+            const botonMostrarClave = document.getElementById('boton-mostrar-clave');
+            const campoClave = document.getElementById('clave');
+            const campoConfirmarClave = document.getElementById('confirmar-clave');
+            const iconoOjo = document.getElementById('icono-ojo');
+            const botonRegistro = document.getElementById('boton-registro');
+            const campoRUT = document.getElementById('rut');
+            const errorRUT = document.getElementById('error-rut');
+            const progresoFortaleza = document.getElementById('progreso-fortaleza');
+            const textoFortaleza = document.getElementById('texto-fortaleza');
+
+            // Verificar si ya hay una sesión activa
+            if (window.GestorSesion && window.GestorSesion.sesionActiva()) {
+                window.SistemaAuth.mostrarMensaje('Ya tienes una sesión activa', 'info');
+                setTimeout(() => {
+                    window.location.href = '../../index.html';
+                }, 2000);
+                return;
+            }
+
+            // Formateo automático de RUT
+            campoRUT.addEventListener('input', function() {
+                let valor = this.value.replace(/[^0-9kK]/g, '');
+                
+                if (valor.length > 1) {
+                    const cuerpo = valor.slice(0, -1);
+                    const dv = valor.slice(-1);
+                    valor = cuerpo + '-' + dv;
+                }
+                
+                this.value = valor;
+                
+                // Validar RUT en tiempo real
+                if (valor.length >= 3) {
+                    if (window.Validadores.validarRUT(valor)) {
+                        this.classList.remove('border-red-500');
+                        this.classList.add('border-green-500');
+                        errorRUT.style.display = 'none';
+                    } else {
+                        this.classList.remove('border-green-500');
+                        this.classList.add('border-red-500');
+                        errorRUT.textContent = 'RUT inválido';
+                        errorRUT.style.display = 'block';
+                    }
+                } else {
+                    this.classList.remove('border-red-500', 'border-green-500');
+                    errorRUT.style.display = 'none';
+                }
+            });
+
+            // Indicador de fortaleza de contraseña
+            campoClave.addEventListener('input', function() {
+                const clave = this.value;
+                let fortaleza = 0;
+                let mensaje = '';
+                let clase = '';
+
+                if (clave.length >= 8) fortaleza++;
+                if (/[a-z]/.test(clave)) fortaleza++;
+                if (/[A-Z]/.test(clave)) fortaleza++;
+                if (/[0-9]/.test(clave)) fortaleza++;
+                if (/[^A-Za-z0-9]/.test(clave)) fortaleza++;
+
+                switch (fortaleza) {
+                    case 0:
+                    case 1:
+                        mensaje = 'Muy débil';
+                        clase = 'fortaleza-debil';
+                        break;
+                    case 2:
+                        mensaje = 'Débil';
+                        clase = 'fortaleza-debil';
+                        break;
+                    case 3:
+                        mensaje = 'Regular';
+                        clase = 'fortaleza-regular';
+                        break;
+                    case 4:
+                        mensaje = 'Buena';
+                        clase = 'fortaleza-buena';
+                        break;
+                    case 5:
+                        mensaje = 'Muy fuerte';
+                        clase = 'fortaleza-fuerte';
+                        break;
+                }
+
+                progresoFortaleza.className = `progreso-fortaleza ${clase}`;
+                textoFortaleza.textContent = clave ? mensaje : 'Ingresa una contraseña';
+                textoFortaleza.className = `texto-fortaleza text-${clase.split('-')[1]}`;
+            });
+
+            // Validar confirmación de contraseña
+            campoConfirmarClave.addEventListener('input', function() {
+                if (this.value && this.value !== campoClave.value) {
+                    this.setCustomValidity('Las contraseñas no coinciden');
+                    this.classList.add('border-red-500');
+                } else {
+                    this.setCustomValidity('');
+                    this.classList.remove('border-red-500');
+                    if (this.value) this.classList.add('border-green-500');
+                }
+            });
+
+            // Mostrar/ocultar contraseña
+            botonMostrarClave.addEventListener('click', function() {
+                const tipo = campoClave.type === 'password' ? 'text' : 'password';
+                campoClave.type = tipo;
+                campoConfirmarClave.type = tipo;
+                
+                iconoOjo.textContent = tipo === 'password' ? '👁️' : '🙈';
+                this.setAttribute('aria-label', tipo === 'password' ? 'Mostrar contraseña' : 'Ocultar contraseña');
+            });
+
+            // Manejar envío del formulario
+            formularioRegistro.addEventListener('submit', async function(evento) {
+                evento.preventDefault();
+                
+                const datosFormulario = new FormData(formularioRegistro);
+                const datosUsuario = {
+                    nombre: datosFormulario.get('nombre').trim(),
+                    apellido: datosFormulario.get('apellido').trim(),
+                    rut: datosFormulario.get('rut').trim(),
+                    email: datosFormulario.get('email').trim(),
+                    clave: datosFormulario.get('clave'),
+                    rol: datosFormulario.get('rol'),
+                    fechaNacimiento: datosFormulario.get('fecha-nacimiento'),
+                    telefono: datosFormulario.get('telefono')?.trim()
+                };
+
+                // Validar confirmación de contraseña
+                if (datosUsuario.clave !== datosFormulario.get('confirmar-clave')) {
+                    window.SistemaAuth.mostrarError('Las contraseñas no coinciden');
+                    return;
+                }
+
+                // Validar términos
+                if (!datosFormulario.get('terminos')) {
+                    window.SistemaAuth.mostrarError('Debes aceptar los términos y condiciones');
+                    return;
+                }
+
+                // Guardar texto original del botón
+                const textoOriginal = botonRegistro.textContent;
+                
+                try {
+                    const exito = await window.SistemaAuth.registrarUsuario(datosUsuario);
+                    
+                    if (exito) {
+                        botonRegistro.textContent = 'Cuenta creada exitosamente';
+                        // Limpiar formulario
+                        formularioRegistro.reset();
+                        progresoFortaleza.className = 'progreso-fortaleza';
+                        textoFortaleza.textContent = 'Ingresa una contraseña';
+                    }
+                } finally {
+                    // Restaurar texto del botón
+                    setTimeout(() => {
+                        botonRegistro.textContent = textoOriginal;
+                    }, 3000);
+                }
+            });
+
+            // Validaciones en tiempo real
+            const campos = ['nombre', 'apellido', 'email'];
+            campos.forEach(nombreCampo => {
+                const campo = document.getElementById(nombreCampo);
+                campo.addEventListener('blur', function() {
+                    if (this.hasAttribute('required') && !this.value.trim()) {
+                        this.setCustomValidity('Este campo es obligatorio');
+                        this.reportValidity();
+                    } else {
+                        this.setCustomValidity('');
+                    }
+                });
+
+                campo.addEventListener('input', function() {
+                    this.setCustomValidity('');
+                });
+            });
+
+            // Enfocar el primer campo
+            document.getElementById('nombre').focus();
+        });
+    </script>
+</body>
+</html>

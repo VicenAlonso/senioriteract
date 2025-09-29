@@ -1,0 +1,145 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Estilos base personalizados para personas mayores */
+@layer base {
+  html {
+    /* Tamaño de fuente base más grande para mejor legibilidad */
+    font-size: 18px;
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    /* Altura de línea más espaciosa */
+    line-height: 1.7;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+  
+  /* Botones más grandes y accesibles */
+  button {
+    min-height: 48px;
+    min-width: 48px;
+    cursor: pointer;
+  }
+  
+  /* Enlaces más visibles */
+  a {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    transition: color 0.2s ease;
+  }
+  
+  a:hover {
+    color: #0284c7;
+  }
+  
+  /* Campos de formulario más grandes */
+  input, textarea, select {
+    min-height: 48px;
+    font-size: 1rem;
+  }
+  
+  /* Mejora del foco para accesibilidad */
+  *:focus {
+    outline: 2px solid #0ea5e9;
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  /* Componente de botón principal */
+  .boton-primario {
+    @apply bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 shadow-sm;
+  }
+  
+  /* Componente de botón secundario */
+  .boton-secundario {
+    @apply bg-white hover:bg-gray-50 text-gray-700 font-medium py-3 px-6 rounded-lg border border-gray-300 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 shadow-sm;
+  }
+  
+  /* Componente de tarjeta */
+  .tarjeta {
+    @apply bg-white rounded-lg shadow-sm border border-gray-200 p-6 transition-shadow duration-200 hover:shadow-md;
+  }
+  
+  /* Componente de campo de entrada */
+  .campo-entrada {
+    @apply w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200;
+  }
+  
+  /* Componentes de navegación */
+  .texto-navegacion {
+    @apply text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200;
+  }
+  
+  .bloque-navegacion-movil {
+    @apply text-gray-700 hover:text-blue-600 hover:bg-gray-50 block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200;
+  }
+}
+
+@layer utilities {
+  /* Utilidades para espaciado más generoso */
+  .espaciado-generoso {
+    @apply space-y-6;
+  }
+  
+  /* Utilidad para texto grande y legible */
+  .texto-legible {
+    @apply text-lg leading-relaxed;
+  }
+  
+  /* Utilidad para ocultar elementos visualmente pero mantenerlos accesibles */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+  
+  /* Utilidades para animaciones suaves */
+  .transicion-suave {
+    @apply transition-all duration-300 ease-in-out;
+  }
+  
+  /* Utilidad para sombras más suaves */
+  .sombra-suave {
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  }
+}
+
+/* Estilos específicos para personas mayores */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Mejoras para dispositivos táctiles */
+@media (hover: none) and (pointer: coarse) {
+  button, a {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Estilos para impresión */
+@media print {
+  .no-imprimir {
+    display: none !important;
+  }
+  
+  body {
+    font-size: 12pt;
+    line-height: 1.5;
+    color: black;
+    background: white;
+  }
+}

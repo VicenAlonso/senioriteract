@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Recuperar contraseña en SeniorInteract - Plataforma accesible para personas mayores">
+    <title>Recuperar Contraseña - SeniorInteract</title>
+    
+    <!-- Fuentes de Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Estilos CSS -->
+    <link rel="stylesheet" href="../../dist/style.css">
+    <link rel="stylesheet" href="../css/auth.css">
+    
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="bg-gray-50">
+    <!-- Contenedor principal -->
+    <div class="contenedor-auth">
+        <div class="tarjeta-auth">
+            <!-- Encabezado -->
+            <div class="encabezado-auth">
+                <div class="icono-auth">
+                    <span role="img" aria-label="Recuperar">🔑</span>
+                </div>
+                <h1>Recuperar Contraseña</h1>
+                <p>Te ayudaremos a recuperar el acceso a tu cuenta</p>
+            </div>
+
+            <!-- Contenido dinámico -->
+            <div id="contenido-recuperacion">
+                <!-- Paso 1: Solicitar email -->
+                <div id="paso-email" class="paso-recuperacion">
+                    <form id="formulario-recuperar" class="formulario-auth" novalidate>
+                        <!-- Campo Email -->
+                        <div class="grupo-campo">
+                            <label for="email" class="etiqueta-campo etiqueta-requerida">
+                                Correo Electrónico
+                            </label>
+                            <input 
+                                type="email" 
+                                id="email" 
+                                name="email"
+                                class="campo-auth"
+                                placeholder="tu@email.com"
+                                required
+                                autocomplete="email"
+                                aria-describedby="ayuda-email"
+                            >
+                            <div id="ayuda-email" class="mensaje-ayuda">
+                                Ingresa el email asociado a tu cuenta. Te enviaremos un enlace para restablecer tu contraseña.
+                            </div>
+                        </div>
+
+                        <!-- Botón de envío -->
+                        <button type="submit" class="boton-auth-primario" id="boton-recuperar">
+                            Enviar Enlace de Recuperación
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Paso 2: Confirmación de envío -->
+                <div id="paso-confirmacion" class="paso-recuperacion" style="display: none;">
+                    <div class="text-center espaciado-generoso">
+                        <div class="icono-auth bg-green-500">
+                            <span role="img" aria-label="Enviado">✉️</span>
+                        </div>
+                        <h2 class="text-xl font-semibold text-gray-900 mb-4">
+                            ¡Email Enviado!
+                        </h2>
+                        <p class="texto-legible text-gray-600 mb-6">
+                            Hemos enviado un enlace de recuperación a tu correo electrónico. 
+                            Revisa tu bandeja de entrada y sigue las instrucciones.
+                        </p>
+                        
+                        <!-- Instrucciones -->
+                        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6 text-left">
+                            <h3 class="font-semibold text-blue-900 mb-2">Instrucciones:</h3>
+                            <ol class="list-decimal list-inside text-blue-800 space-y-1">
+                                <li>Revisa tu bandeja de entrada</li>
+                                <li>Busca un email de SeniorInteract</li>
+                                <li>Haz clic en el enlace del email</li>
+                                <li>Crea tu nueva contraseña</li>
+                            </ol>
+                        </div>
+
+                        <!-- Botones de acción -->
+                        <div class="space-y-3">
+                            <button id="boton-reenviar" class="boton-auth-secundario">
+                                Reenviar Email
+                            </button>
+                            <div class="text-sm text-gray-500">
+                                ¿No ves el email? Revisa tu carpeta de spam
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Paso 3: Cambiar contraseña (cuando viene desde email) -->
+                <div id="paso-nueva-clave" class="paso-recuperacion" style="display: none;">
+                    <form id="formulario-nueva-clave" class="formulario-auth" novalidate>
+                        <div class="text-center mb-6">
+                            <h2 class="text-xl font-semibold text-gray-900">
+                                Crear Nueva Contraseña
+                            </h2>
+                            <p class="text-gray-600 mt-2">
+                                Ingresa tu nueva contraseña segura
+                            </p>
+                        </div>
+
+                        <!-- Nueva Contraseña -->
+                        <div class="grupo-campo">
+                            <label for="nueva-clave" class="etiqueta-campo etiqueta-requerida">
+                                Nueva Contraseña
+                            </label>
+                            <div class="relative">
+                                <input 
+                                    type="password" 
+                                    id="nueva-clave" 
+                                    name="nueva-clave"
+                                    class="campo-auth"
+                                    placeholder="Tu nueva contraseña"
+                                    required
+                                    autocomplete="new-password"
+                                    aria-describedby="ayuda-nueva-clave"
+                                >
+                                <button 
+                                    type="button" 
+                                    id="boton-mostrar-nueva-clave"
+                                    class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                                    aria-label="Mostrar contraseña"
+                                >
+                                    <span id="icono-ojo-nueva">👁️</span>
+                                </button>
+                            </div>
+                            <div class="indicador-clave">
+                                <div class="barra-fortaleza">
+                                    <div id="progreso-fortaleza-nueva" class="progreso-fortaleza"></div>
+                                </div>
+                                <div id="texto-fortaleza-nueva" class="texto-fortaleza">
+                                    Ingresa una contraseña
+                                </div>
+                            </div>
+                            <div id="ayuda-nueva-clave" class="mensaje-ayuda">
+                                Mínimo 8 caracteres, incluye mayúsculas, minúsculas y números
+                            </div>
+                        </div>
+
+                        <!-- Confirmar Nueva Contraseña -->
+                        <div class="grupo-campo">
+                            <label for="confirmar-nueva-clave" class="etiqueta-campo etiqueta-requerida">
+                                Confirmar Nueva Contraseña
+                            </label>
+                            <input 
+                                type="password" 
+                                id="confirmar-nueva-clave" 
+                                name="confirmar-nueva-clave"
+                                class="campo-auth"
+                                placeholder="Repite tu nueva contraseña"
+                                required
+                                autocomplete="new-password"
+                                aria-describedby="ayuda-confirmar-nueva-clave"
+                            >
+                            <div id="ayuda-confirmar-nueva-clave" class="mensaje-ayuda">
+                                Debe coincidir con la contraseña anterior
+                            </div>
+                        </div>
+
+                        <!-- Botón de envío -->
+                        <button type="submit" class="boton-auth-primario" id="boton-cambiar-clave">
+                            Cambiar Contraseña
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Enlaces de navegación -->
+            <div class="pie-auth">
+                <p>
+                    <a href="login.html" class="enlace-auth">
+                        ← Volver al inicio de sesión
+                    </a>
+                </p>
+                <p class="mt-2">
+                    ¿No tienes cuenta? 
+                    <a href="registro.html" class="enlace-auth">Crear una cuenta</a>
+                </p>
+                <p class="mt-4">
+                    <a href="../../index.html" class="enlace-auth text-sm">
+                        Volver al inicio
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenedor de mensajes (se crea dinámicamente) -->
+    <div id="contenedor-mensajes"></div>
+
+    <!-- Scripts -->
+    <script src="../js/config.js"></script>
+    <script src="../js/auth.js"></script>
+    <script>
+        // Script específico para la página de recuperación
+        document.addEventListener('DOMContentLoaded', function() {
+            const formularioRecuperar = document.getElementById('formulario-recuperar');
+            const formularioNuevaClave = document.getElementById('formulario-nueva-clave');
+            const botonRecuperar = document.getElementById('boton-recuperar');
+            const botonReenviar = document.getElementById('boton-reenviar');
+            const botonCambiarClave = document.getElementById('boton-cambiar-clave');
+            
+            // Elementos de los pasos
+            const pasoEmail = document.getElementById('paso-email');
+            const pasoConfirmacion = document.getElementById('paso-confirmacion');
+            const pasoNuevaClave = document.getElementById('paso-nueva-clave');
+            
+            // Elementos de contraseña
+            const botonMostrarNuevaClave = document.getElementById('boton-mostrar-nueva-clave');
+            const campoNuevaClave = document.getElementById('nueva-clave');
+            const campoConfirmarNuevaClave = document.getElementById('confirmar-nueva-clave');
+            const iconoOjoNueva = document.getElementById('icono-ojo-nueva');
+            const progresoFortalezaNueva = document.getElementById('progreso-fortaleza-nueva');
+            const textoFortalezaNueva = document.getElementById('texto-fortaleza-nueva');
+
+            let emailRecuperacion = '';
+            let tiempoReenvio = 0;
+
+            // Verificar si viene desde un enlace de recuperación
+            const urlParams = new URLSearchParams(window.location.search);
+            const tokenRecuperacion = urlParams.get('token') || window.location.hash.substring(1);
+            
+            if (tokenRecuperacion) {
+                mostrarPaso('nueva-clave');
+            }
+
+            // Verificar si ya hay una sesión activa
+            if (window.GestorSesion && window.GestorSesion.sesionActiva()) {
+                window.SistemaAuth.mostrarMensaje('Ya tienes una sesión activa', 'info');
+                setTimeout(() => {
+                    window.location.href = '../../index.html';
+                }, 2000);
+                return;
+            }
+
+            // Función para mostrar pasos
+            function mostrarPaso(paso) {
+                pasoEmail.style.display = 'none';
+                pasoConfirmacion.style.display = 'none';
+                pasoNuevaClave.style.display = 'none';
+                
+                switch (paso) {
+                    case 'email':
+                        pasoEmail.style.display = 'block';
+                        document.getElementById('email').focus();
+                        break;
+                    case 'confirmacion':
+                        pasoConfirmacion.style.display = 'block';
+                        break;
+                    case 'nueva-clave':
+                        pasoNuevaClave.style.display = 'block';
+                        campoNuevaClave.focus();
+                        break;
+                }
+            }
+
+            // Manejar envío del formulario de recuperación
+            formularioRecuperar.addEventListener('submit', async function(evento) {
+                evento.preventDefault();
+                
+                const datosFormulario = new FormData(formularioRecuperar);
+                const email = datosFormulario.get('email').trim();
+                emailRecuperacion = email;
+
+                // Guardar texto original del botón
+                const textoOriginal = botonRecuperar.textContent;
+                
+                try {
+                    const exito = await window.SistemaAuth.recuperarClave(email);
+                    
+                    if (exito) {
+                        mostrarPaso('confirmacion');
+                        iniciarTemporizadorReenvio();
+                    }
+                } finally {
+                    botonRecuperar.textContent = textoOriginal;
+                }
+            });
+
+            // Manejar reenvío de email
+            botonReenviar.addEventListener('click', async function() {
+                if (tiempoReenvio > 0) {
+                    window.SistemaAuth.mostrarMensaje(`Espera ${tiempoReenvio} segundos antes de reenviar`, 'info');
+                    return;
+                }
+
+                const textoOriginal = this.textContent;
+                
+                try {
+                    const exito = await window.SistemaAuth.recuperarClave(emailRecuperacion);
+                    
+                    if (exito) {
+                        window.SistemaAuth.mostrarExito('Email reenviado correctamente');
+                        iniciarTemporizadorReenvio();
+                    }
+                } finally {
+                    this.textContent = textoOriginal;
+                }
+            });
+
+            // Temporizador para reenvío
+            function iniciarTemporizadorReenvio() {
+                tiempoReenvio = 60; // 60 segundos
+                const intervalo = setInterval(() => {
+                    tiempoReenvio--;
+                    if (tiempoReenvio > 0) {
+                        botonReenviar.textContent = `Reenviar en ${tiempoReenvio}s`;
+                        botonReenviar.disabled = true;
+                    } else {
+                        botonReenviar.textContent = 'Reenviar Email';
+                        botonReenviar.disabled = false;
+                        clearInterval(intervalo);
+                    }
+                }, 1000);
+            }
+
+            // Indicador de fortaleza de contraseña nueva
+            if (campoNuevaClave) {
+                campoNuevaClave.addEventListener('input', function() {
+                    const clave = this.value;
+                    let fortaleza = 0;
+                    let mensaje = '';
+                    let clase = '';
+
+                    if (clave.length >= 8) fortaleza++;
+                    if (/[a-z]/.test(clave)) fortaleza++;
+                    if (/[A-Z]/.test(clave)) fortaleza++;
+                    if (/[0-9]/.test(clave)) fortaleza++;
+                    if (/[^A-Za-z0-9]/.test(clave)) fortaleza++;
+
+                    switch (fortaleza) {
+                        case 0:
+                        case 1:
+                            mensaje = 'Muy débil';
+                            clase = 'fortaleza-debil';
+                            break;
+                        case 2:
+                            mensaje = 'Débil';
+                            clase = 'fortaleza-debil';
+                            break;
+                        case 3:
+                            mensaje = 'Regular';
+                            clase = 'fortaleza-regular';
+                            break;
+                        case 4:
+                            mensaje = 'Buena';
+                            clase = 'fortaleza-buena';
+                            break;
+                        case 5:
+                            mensaje = 'Muy fuerte';
+                            clase = 'fortaleza-fuerte';
+                            break;
+                    }
+
+                    progresoFortalezaNueva.className = `progreso-fortaleza ${clase}`;
+                    textoFortalezaNueva.textContent = clave ? mensaje : 'Ingresa una contraseña';
+                });
+            }
+
+            // Validar confirmación de contraseña nueva
+            if (campoConfirmarNuevaClave) {
+                campoConfirmarNuevaClave.addEventListener('input', function() {
+                    if (this.value && this.value !== campoNuevaClave.value) {
+                        this.setCustomValidity('Las contraseñas no coinciden');
+                        this.classList.add('border-red-500');
+                    } else {
+                        this.setCustomValidity('');
+                        this.classList.remove('border-red-500');
+                        if (this.value) this.classList.add('border-green-500');
+                    }
+                });
+            }
+
+            // Mostrar/ocultar contraseña nueva
+            if (botonMostrarNuevaClave) {
+                botonMostrarNuevaClave.addEventListener('click', function() {
+                    const tipo = campoNuevaClave.type === 'password' ? 'text' : 'password';
+                    campoNuevaClave.type = tipo;
+                    campoConfirmarNuevaClave.type = tipo;
+                    
+                    iconoOjoNueva.textContent = tipo === 'password' ? '👁️' : '🙈';
+                    this.setAttribute('aria-label', tipo === 'password' ? 'Mostrar contraseña' : 'Ocultar contraseña');
+                });
+            }
+
+            // Manejar cambio de contraseña
+            if (formularioNuevaClave) {
+                formularioNuevaClave.addEventListener('submit', async function(evento) {
+                    evento.preventDefault();
+                    
+                    const datosFormulario = new FormData(formularioNuevaClave);
+                    const nuevaClave = datosFormulario.get('nueva-clave');
+                    const confirmarClave = datosFormulario.get('confirmar-nueva-clave');
+
+                    // Validar que las contraseñas coincidan
+                    if (nuevaClave !== confirmarClave) {
+                        window.SistemaAuth.mostrarError('Las contraseñas no coinciden');
+                        return;
+                    }
+
+                    // Validar fortaleza de contraseña
+                    if (!window.Validadores.validarClave(nuevaClave)) {
+                        window.SistemaAuth.mostrarError('La contraseña debe tener al menos 8 caracteres');
+                        return;
+                    }
+
+                    const textoOriginal = botonCambiarClave.textContent;
+                    
+                    try {
+                        // Aquí implementarías la lógica para cambiar la contraseña con Supabase
+                        // usando el token de recuperación
+                        window.SistemaAuth.mostrarCargando(true);
+                        
+                        // Simular cambio de contraseña (implementar con Supabase)
+                        await new Promise(resolve => setTimeout(resolve, 2000));
+                        
+                        window.SistemaAuth.mostrarExito('Contraseña cambiada exitosamente');
+                        
+                        setTimeout(() => {
+                            window.location.href = 'login.html';
+                        }, 2000);
+                        
+                    } catch (error) {
+                        console.error('Error al cambiar contraseña:', error);
+                        window.SistemaAuth.mostrarError('Error al cambiar la contraseña. Inténtalo nuevamente.');
+                    } finally {
+                        window.SistemaAuth.mostrarCargando(false);
+                        botonCambiarClave.textContent = textoOriginal;
+                    }
+                });
+            }
+
+            // Validación de email en tiempo real
+            const campoEmail = document.getElementById('email');
+            campoEmail.addEventListener('blur', function() {
+                if (this.value && !window.Validadores.validarEmail(this.value)) {
+                    this.setCustomValidity('Por favor, ingresa un email válido');
+                    this.reportValidity();
+                } else {
+                    this.setCustomValidity('');
+                }
+            });
+
+            campoEmail.addEventListener('input', function() {
+                this.setCustomValidity('');
+            });
+
+            // Enfocar el primer campo visible
+            if (pasoEmail.style.display !== 'none') {
+                campoEmail.focus();
+            }
+        });
+    </script>
+</body>
+</html>

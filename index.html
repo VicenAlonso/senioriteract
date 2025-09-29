@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Una aplicación diseñada especialmente para facilitar la interacción digital de las personas mayores">
+    <meta name="keywords" content="personas mayores, accesibilidad, tecnología, senior">
+    <meta name="author" content="Tu Nombre">
+    
+    <title>SeniorInteract - Aplicación para Personas Mayores</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    
+    <!-- Fuentes de Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Estilos CSS compilados con Tailwind -->
+    <link rel="stylesheet" href="./dist/style.css">
+    
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="antialiased bg-gray-50 text-gray-900 min-h-screen">
+    <!-- Encabezado principal -->
+    <header class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <h1 class="text-xl font-semibold text-primario-700">
+                        SeniorInteract
+                    </h1>
+                </div>
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#inicio" class="texto-navegacion">Inicio</a>
+                    <a href="#caracteristicas" class="texto-navegacion">Características</a>
+                    <a href="#ayuda" class="texto-navegacion">Ayuda</a>
+                </nav>
+                <div class="hidden md:flex items-center space-x-4">
+                    <div id="enlaces-auth" class="flex items-center space-x-4">
+                        <a href="./src/pages/login.html" class="texto-navegacion enlace-auth-dinamico">Iniciar Sesión</a>
+                        <a href="./src/pages/registro.html" class="boton-primario px-4 py-2 text-sm enlace-auth-dinamico">Registrarse</a>
+                    </div>
+                    <div id="info-usuario" class="hidden flex items-center space-x-4">
+                        <span class="text-gray-600">Bienvenido/a</span>
+                        <a href="./src/pages/principal.html" class="boton-primario px-4 py-2 text-sm">Mi Área</a>
+                    </div>
+                </div>
+                <!-- Botón de menú móvil -->
+                <button id="boton-menu-movil" class="md:hidden boton-secundario p-2">
+                    <span class="sr-only">Abrir menú</span>
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Menú móvil -->
+        <div id="menu-movil" class="md:hidden hidden bg-white border-t border-gray-200">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="#inicio" class="bloque-navegacion-movil">Inicio</a>
+                <a href="#caracteristicas" class="bloque-navegacion-movil">Características</a>
+                <a href="#ayuda" class="bloque-navegacion-movil">Ayuda</a>
+                <div id="enlaces-auth-movil" class="border-t border-gray-200 pt-2 mt-2">
+                    <a href="./src/pages/login.html" class="bloque-navegacion-movil enlace-auth-dinamico">Iniciar Sesión</a>
+                    <a href="./src/pages/registro.html" class="bloque-navegacion-movil font-semibold text-blue-600 enlace-auth-dinamico">Registrarse</a>
+                </div>
+                <div id="info-usuario-movil" class="hidden border-t border-gray-200 pt-2 mt-2">
+                    <a href="./src/pages/principal.html" class="bloque-navegacion-movil font-semibold text-blue-600">Mi Área Personal</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Contenido principal -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Sección de bienvenida -->
+        <section id="inicio" class="text-center py-12 espaciado-generoso">
+            <h1 class="text-4xl font-bold text-gray-900 mb-4">
+                ¡Bienvenido a SeniorInteract!
+            </h1>
+            <p class="texto-legible text-gray-600 max-w-2xl mx-auto">
+                Una aplicación diseñada especialmente para hacer que la tecnología sea 
+                más accesible y fácil de usar para las personas mayores.
+            </p>
+        </section>
+
+        <!-- Sección de características principales -->
+        <section id="caracteristicas" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 py-8">
+            <div class="tarjeta text-center">
+                <div class="w-16 h-16 bg-primario-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span class="text-2xl" role="img" aria-label="Personas">👥</span>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                    Fácil de Usar
+                </h3>
+                <p class="text-gray-600">
+                    Interfaz simple y clara, diseñada pensando en la comodidad y facilidad de uso.
+                </p>
+            </div>
+
+            <div class="tarjeta text-center">
+                <div class="w-16 h-16 bg-primario-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span class="text-2xl" role="img" aria-label="Lupa">🔍</span>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                    Texto Grande
+                </h3>
+                <p class="text-gray-600">
+                    Fuentes grandes y claras para una mejor legibilidad y experiencia visual.
+                </p>
+            </div>
+
+            <div class="tarjeta text-center">
+                <div class="w-16 h-16 bg-primario-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span class="text-2xl" role="img" aria-label="Objetivo">🎯</span>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                    Accesible
+                </h3>
+                <p class="text-gray-600">
+                    Diseñado siguiendo las mejores prácticas de accesibilidad web.
+                </p>
+            </div>
+        </section>
+
+        <!-- Sección de acciones principales -->
+        <section class="text-center py-8">
+            <h2 class="text-2xl font-semibold text-gray-900 mb-6">
+                ¿Qué te gustaría hacer hoy?
+            </h2>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button id="boton-comenzar" class="boton-primario">
+                    Comenzar
+                </button>
+                <button id="boton-aprender" class="boton-secundario">
+                    Aprender Más
+                </button>
+            </div>
+        </section>
+
+        <!-- Sección de ayuda -->
+        <section id="ayuda" class="py-8">
+            <div class="tarjeta max-w-2xl mx-auto text-center">
+                <h2 class="text-2xl font-semibold text-gray-900 mb-4">
+                    ¿Necesitas Ayuda?
+                </h2>
+                <p class="texto-legible text-gray-600 mb-6">
+                    Estamos aquí para ayudarte. Si tienes alguna pregunta o necesitas asistencia, 
+                    no dudes en contactarnos.
+                </p>
+                <button id="boton-contacto" class="boton-primario">
+                    Contactar Soporte
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Pie de página -->
+    <footer class="bg-white border-t border-gray-200 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <p class="text-center text-sm text-gray-600">
+                © 2024 SeniorInteract. Diseñado para facilitar la vida digital.
+            </p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="./src/js/config.js"></script>
+    <script src="./src/js/auth.js"></script>
+    <script src="./src/app.js"></script>
+    <script>
+        // Script específico para el index con manejo de sesión
+        document.addEventListener('DOMContentLoaded', function() {
+            // Actualizar interfaz según el estado de sesión
+            actualizarInterfazIndex();
+            
+            function actualizarInterfazIndex() {
+                const sesionActiva = window.GestorSesion && window.GestorSesion.sesionActiva();
+                const usuario = window.GestorSesion && window.GestorSesion.obtenerUsuarioActual();
+                
+                // Elementos de autenticación
+                const enlacesAuth = document.getElementById('enlaces-auth');
+                const infoUsuario = document.getElementById('info-usuario');
+                const enlacesAuthMovil = document.getElementById('enlaces-auth-movil');
+                const infoUsuarioMovil = document.getElementById('info-usuario-movil');
+                
+                if (sesionActiva && usuario) {
+                    // Usuario logueado - mostrar info de usuario
+                    if (enlacesAuth) enlacesAuth.classList.add('hidden');
+                    if (infoUsuario) {
+                        infoUsuario.classList.remove('hidden');
+                        const spanBienvenida = infoUsuario.querySelector('span');
+                        if (spanBienvenida) {
+                            spanBienvenida.textContent = `Bienvenido/a, ${usuario.nombre}`;
+                        }
+                    }
+                    
+                    // Menú móvil
+                    if (enlacesAuthMovil) enlacesAuthMovil.classList.add('hidden');
+                    if (infoUsuarioMovil) infoUsuarioMovil.classList.remove('hidden');
+                    
+                } else {
+                    // Usuario no logueado - mostrar enlaces de auth
+                    if (enlacesAuth) enlacesAuth.classList.remove('hidden');
+                    if (infoUsuario) infoUsuario.classList.add('hidden');
+                    
+                    // Menú móvil
+                    if (enlacesAuthMovil) enlacesAuthMovil.classList.remove('hidden');
+                    if (infoUsuarioMovil) infoUsuarioMovil.classList.add('hidden');
+                }
+                
+                console.log(`Interfaz del index actualizada. Sesión activa: ${sesionActiva}`);
+            }
+            
+            // Actualizar interfaz cada vez que cambie la sesión
+            window.addEventListener('storage', function(e) {
+                if (e.key === window.ConfiguracionApp?.sesion?.claveLocalStorage) {
+                    actualizarInterfazIndex();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

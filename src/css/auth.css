@@ -1,0 +1,413 @@
+/**
+ * Estilos específicos para el sistema de autenticación
+ * SeniorInteract - Diseño accesible para personas mayores
+ */
+
+/* Contenedor principal de autenticación */
+.contenedor-auth {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    padding: 1rem;
+}
+
+/* Tarjeta de formulario */
+.tarjeta-auth {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 480px;
+    border: 1px solid #e5e7eb;
+}
+
+/* Encabezado del formulario */
+.encabezado-auth {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.encabezado-auth h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 0.5rem;
+}
+
+.encabezado-auth p {
+    font-size: 1.1rem;
+    color: #6b7280;
+    line-height: 1.6;
+}
+
+/* Logo o icono */
+.icono-auth {
+    width: 64px;
+    height: 64px;
+    background: #3b82f6;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    font-size: 2rem;
+    color: white;
+}
+
+/* Formularios */
+.formulario-auth {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Grupos de campos */
+.grupo-campo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.grupo-campo-doble {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+/* Etiquetas */
+.etiqueta-campo {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.25rem;
+}
+
+.etiqueta-requerida::after {
+    content: ' *';
+    color: #ef4444;
+}
+
+/* Campos de entrada */
+.campo-auth {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    font-size: 1rem;
+    border: 2px solid #d1d5db;
+    border-radius: 8px;
+    background-color: #ffffff;
+    transition: all 0.2s ease;
+    min-height: 48px;
+}
+
+.campo-auth:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.campo-auth:invalid {
+    border-color: #ef4444;
+}
+
+.campo-auth:invalid:focus {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+/* Campo de RUT con formato automático */
+.campo-rut {
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.5px;
+}
+
+/* Selectores */
+.selector-auth {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    font-size: 1rem;
+    border: 2px solid #d1d5db;
+    border-radius: 8px;
+    background-color: #ffffff;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.5rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+    padding-right: 2.5rem;
+    appearance: none;
+    min-height: 48px;
+}
+
+.selector-auth:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Botones de autenticación */
+.boton-auth-primario {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: white;
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-height: 56px;
+    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+}
+
+.boton-auth-primario:hover {
+    background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+    box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
+    transform: translateY(-1px);
+}
+
+.boton-auth-primario:active {
+    transform: translateY(0);
+}
+
+.boton-auth-primario:disabled {
+    background: #9ca3af;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.boton-auth-secundario {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #374151;
+    background: white;
+    border: 2px solid #d1d5db;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-height: 48px;
+}
+
+.boton-auth-secundario:hover {
+    background: #f9fafb;
+    border-color: #9ca3af;
+}
+
+/* Enlaces */
+.enlace-auth {
+    color: #3b82f6;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.enlace-auth:hover {
+    color: #1d4ed8;
+    text-decoration: underline;
+}
+
+/* Mensajes de ayuda */
+.mensaje-ayuda {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-top: 0.25rem;
+    line-height: 1.4;
+}
+
+.mensaje-error {
+    font-size: 0.875rem;
+    color: #ef4444;
+    margin-top: 0.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.mensaje-error::before {
+    content: '⚠';
+    font-size: 1rem;
+}
+
+/* Separadores */
+.separador-auth {
+    display: flex;
+    align-items: center;
+    margin: 1.5rem 0;
+}
+
+.separador-auth::before,
+.separador-auth::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #e5e7eb;
+}
+
+.separador-auth span {
+    padding: 0 1rem;
+    color: #6b7280;
+    font-size: 0.875rem;
+}
+
+/* Pie del formulario */
+.pie-auth {
+    text-align: center;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e5e7eb;
+}
+
+.pie-auth p {
+    color: #6b7280;
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Indicador de fortaleza de contraseña */
+.indicador-clave {
+    margin-top: 0.5rem;
+}
+
+.barra-fortaleza {
+    height: 4px;
+    background: #e5e7eb;
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.progreso-fortaleza {
+    height: 100%;
+    transition: all 0.3s ease;
+    border-radius: 2px;
+}
+
+.fortaleza-debil { background: #ef4444; width: 25%; }
+.fortaleza-regular { background: #f59e0b; width: 50%; }
+.fortaleza-buena { background: #10b981; width: 75%; }
+.fortaleza-fuerte { background: #059669; width: 100%; }
+
+.texto-fortaleza {
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+/* Checkbox personalizado */
+.checkbox-auth {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+}
+
+.checkbox-auth input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #d1d5db;
+    border-radius: 4px;
+    appearance: none;
+    cursor: pointer;
+    position: relative;
+}
+
+.checkbox-auth input[type="checkbox"]:checked {
+    background: #3b82f6;
+    border-color: #3b82f6;
+}
+
+.checkbox-auth input[type="checkbox"]:checked::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.checkbox-auth label {
+    font-size: 0.95rem;
+    color: #374151;
+    cursor: pointer;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .tarjeta-auth {
+        padding: 1.5rem;
+        margin: 1rem;
+    }
+    
+    .grupo-campo-doble {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .encabezado-auth h1 {
+        font-size: 1.75rem;
+    }
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.tarjeta-auth {
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* Estados de carga */
+.cargando {
+    position: relative;
+    overflow: hidden;
+}
+
+.cargando::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+/* Accesibilidad mejorada */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Alto contraste */
+@media (prefers-contrast: high) {
+    .campo-auth {
+        border-width: 3px;
+    }
+    
+    .boton-auth-primario {
+        border: 2px solid #1e40af;
+    }
+}
